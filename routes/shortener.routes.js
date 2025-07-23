@@ -2,11 +2,19 @@ import { readFile, writeFile } from "fs/promises";
 import crypto from "crypto";
 import { Router } from "express";
 import path from "path";
+import { title } from "process";
+import { name } from "ejs";
+
+
 
 const router = Router();
 
 const DATA_FILE = path.join("data", "links.json");
 
+router.get("/report", (req, res) => {
+    const student = {title: 'Welcome', name: 'Nishant'};
+    res.render("reports", {student});
+})
 const loadLinks = async () => {
   try {
     const data = await readFile(DATA_FILE, "utf-8");
