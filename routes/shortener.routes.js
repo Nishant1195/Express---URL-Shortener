@@ -4,6 +4,7 @@ import { Router } from "express";
 import path from "path";
 import { title } from "process";
 import { name } from "ejs";
+import { postShortener } from "../controller/postShortener.js";
 
 
 
@@ -53,28 +54,9 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.post("/", async (req, res) => {
-  try {
-    const { url, shortCode } = req.body;
-    const finalShortCode = shortCode || crypto.randomBytes(4).toString("hex");
+router.post("/", postShortener(loadLinks, saveLinks));
 
-    const links = await loadLinks();
 
-    if (links[finalShortCode]) {
-      return res
-        .status(400)
-        .send("Short code already exists. Please choose another.");
-    }
-
-    links[finalShortCode] = url;
-
-    await saveLinks(links);
-    return res.redirect("/");
-  } catch (error) {
-    console.error(error);
-    return res.status(500).send("Internal server error");
-  }
-});
 
 router.get("/:shortCode", async (req, res) => {
   try {
