@@ -1,5 +1,8 @@
 import express from "express";
 import { shortenerRoute } from "./routes/shortener.routes.js";
+import dotenv from "dotenv";
+dotenv.config(); // 👈 This loads variables from .env into process.env
+
 
 const app = express();
 
